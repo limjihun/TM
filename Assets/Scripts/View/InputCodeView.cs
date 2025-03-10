@@ -10,12 +10,26 @@ public class InputCodeView : View
     [SerializeField] private ColorToggle[] _rToggles;
     [SerializeField] private ColorToggle[] _cToggles;
 
-    [SerializeField] private Color _tColor;
-    [SerializeField] private Color _rColor;
-    [SerializeField] private Color _cColor;
-
     [SerializeField] private Button _submitButton;
     
+    public override void Clear()
+    {
+        foreach (var tToggle in _tToggles)
+        {
+            tToggle.isOn = false;
+        }
+
+        foreach (var rToggle in _rToggles)
+        {
+            rToggle.isOn = false;
+        }
+
+        foreach (var cToggle in _cToggles)
+        {
+            cToggle.isOn = false;
+        }
+    }   
+
     public void OnEnable()
     {
         _desc.SetText($"{_mainController.round}라운드에 사용할 코드를 입력하세요.");
@@ -24,7 +38,7 @@ public class InputCodeView : View
         foreach (var tToggle in _tToggles)
         {
             tToggle.isOn = _mainController.t == index;
-            tToggle.Init(_tColor, SaveT);
+            tToggle.Init(Constants.colorBlue, SaveT);
 
             ++index;
         }
@@ -33,7 +47,7 @@ public class InputCodeView : View
         foreach (var rToggle in _rToggles)
         {
             rToggle.isOn = _mainController.r == index;
-            rToggle.Init(_rColor, SaveR);
+            rToggle.Init(Constants.colorYellow, SaveR);
 
             ++index;
         }
@@ -42,7 +56,7 @@ public class InputCodeView : View
         foreach (var cToggle in _cToggles)
         {
             cToggle.isOn = _mainController.c == index;
-            cToggle.Init(_cColor, SaveC);
+            cToggle.Init(Constants.colorPurple, SaveC);
 
             ++index;
         }

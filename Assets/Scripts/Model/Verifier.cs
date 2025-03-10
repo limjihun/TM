@@ -16,8 +16,8 @@ public class Verifier
     public Alphabet alphabet;
     public int id;
     public int logicId;
-    public int maxLogicId => maxLogicIds[logicId];
-    public List<int> xLogicId = new();
+    public int maxLogicId => maxLogicIds[id];
+    public List<int> xLogicIdList = new();
     
     public Verifier(Alphabet alphabet, int id, int logicId)
     {
@@ -28,10 +28,10 @@ public class Verifier
 
     public void CheckX(int logicId)
     {
-        if (xLogicId.Contains(logicId))
-            xLogicId.Remove(logicId);
+        if (xLogicIdList.Contains(logicId))
+            xLogicIdList.Remove(logicId);
         else
-            xLogicId.Add(logicId);
+            xLogicIdList.Add(logicId);
     }
     
     public CheckResult Verify(int t, int r, int c)

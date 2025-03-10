@@ -15,12 +15,20 @@ public class QuestionView : View
 
     [SerializeField] private Image _buttonImage;
     [SerializeField] private TextMeshProUGUI _buttonText;
+    [SerializeField] private Button _nextButton;
+    [SerializeField] private ScrollRect _scrollRect;
 
     private List<VerifierCell> _verifierCells = new();
 
+    public override void Clear()
+    {
+        _scrollRect.verticalNormalizedPosition = 1;
+    }
+    
     public void OnEnable()
     {
-        _title.SetText($"질문하기 ({_mainController.questionCount + 1}/{_mainController.maxQuestionCount})");
+        UpdateQuestionView();
+        
         _t.SetText($"{_mainController.t}");
         _r.SetText($"{_mainController.r}");
         _c.SetText($"{_mainController.c}");
@@ -50,38 +58,41 @@ public class QuestionView : View
         foreach (var cell in _verifierCells)
         {
             cell.UpdateIcon();
+            cell.UpdateX();
         }
     }
-
-    private readonly Color colorGreen = new Color(49/255f, 178/255f, 97/255f);
-    private readonly Color colorRed = new Color(221/255f, 73/255f, 75/255f);
     
     private void OnSearchEnd()
     {
-        _mainController.questionCount++;
+        UpdateQuestionView();
+        UpdateCells();
+    }
+
+    private void UpdateQuestionView()
+    {
         var isQuestionEnd = _mainController.questionCount >= _mainController.maxQuestionCount;
 
         _title.SetText(isQuestionEnd ? $"라운드 결과" : $"질문하기 ({_mainController.questionCount + 1}/{_mainController.maxQuestionCount})");
-        _buttonText.SetText(isQuestionEnd ? "다음 라운드" : "정답 제출");
-        _buttonImage.color = isQuestionEnd ? colorGreen : colorRed;
+        _buttonText.SetText(isQuestionEnd ? "라운드 종료" : "라운드 건너뛰기");
+        _buttonImage.color = isQuestionEnd ? Constants.colorGreen : Constants.colorRed; 
+        _nextButton.interactable = _mainController.questionCount >= 1;
     }
     
     public void OnClickNext()
     {
-        var isQuestionEnd = _mainController.questionCount >= _mainController.maxQuestionCount;
-        if (isQuestionEnd)
-            _mainController.NextRound();
+        if (_verifierCells.Exists(p => p.pendingAnim))
+            return;
         
-        _mainController.ChangeView(viewType, isQuestionEnd ? ViewType.InputCode : ViewType.SolveCode);
+        _mainController.ChangeView(viewType, ViewType.SolveCode);
     }
 
     public void OnClickHistory()
     {
-        _mainController.ChangeView(viewType, ViewType.History);
+        //_mainController.ChangeView(viewType, ViewType.History);
     }
 
     public void OnClickMemo()
     {
-        _mainController.ChangeView(viewType, ViewType.Memo);
+        //_mainController.ChangeView(viewType, ViewType.Memo);
     }
 }

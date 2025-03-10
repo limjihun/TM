@@ -12,6 +12,11 @@ public class View : MonoBehaviour
     {
         
     }
+
+    public virtual void Clear()
+    {
+        
+    }
     
     public void Show(bool isShow)
     {

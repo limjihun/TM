@@ -16,6 +16,14 @@ public class MainController : MonoBehaviour
     public int questionCount;
     public readonly int maxQuestionCount = 3;
     public int totalQuestionCount;
+
+    private int _x;
+    private int _y;
+    private int _z;
+    
+    public int userX;
+    public int userY;
+    public int userZ;
     
     public void Start()
     {
@@ -47,6 +55,22 @@ public class MainController : MonoBehaviour
         round = 1;
         questionCount = 0;
         totalQuestionCount = 0;
+
+        t = 0;
+        r = 0;
+        c = 0;
+        
+        _x = 0;
+        _y = 0;
+        _z = 0;
+        userX = 0;
+        userY = 0;
+        userZ = 0;
+        
+        foreach (var view in _views)
+        {
+            view.Clear();
+        }
     }
 
     private void SelectVerifiers()
@@ -56,6 +80,10 @@ public class MainController : MonoBehaviour
         _verifiers.Add(new Verifier(Alphabet.B, 9, 1));
         _verifiers.Add(new Verifier(Alphabet.C, 18, 2));
         _verifiers.Add(new Verifier(Alphabet.D, 20, 1));
+
+        _x = 1;
+        _y = 1;
+        _z = 1;
     }
 
     public void ChangeView(ViewType prev, ViewType next)
@@ -94,5 +122,13 @@ public class MainController : MonoBehaviour
         t = 0;
         r = 0;
         c = 0;
+    }
+
+    public bool IsCorrect(int t, int r, int c)
+    {
+        userX = t;
+        userY = r;
+        userZ = c;
+        return _x == t && _y == r && _z == c;
     }
 }
