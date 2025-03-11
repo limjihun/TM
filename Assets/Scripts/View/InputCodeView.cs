@@ -107,4 +107,14 @@ public class InputCodeView : View
         _mainController.AddHistory();
         _mainController.ChangeView(viewType, ViewType.Question);
     }
+    
+    public void OnClickHistory()
+    {
+        _mainController.ChangeView(ViewType.None, ViewType.History);
+    }
+
+    public void OnClickMemo()
+    {
+        _mainController.ChangeView(ViewType.None, ViewType.Memo);
+    }
 }

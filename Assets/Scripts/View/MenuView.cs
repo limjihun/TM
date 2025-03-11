@@ -42,6 +42,11 @@ public class MenuView : View
 
         _startButton.interactable = isOn;
     }
+
+    public void OnClickHelp()
+    {
+        _mainController.ChangeView(ViewType.None, ViewType.Help);    
+    }
     
     public void OnClickStart()
     {
