@@ -28,7 +28,7 @@ public class MainController : MonoBehaviour
     public int userZ;
     
     // Setting
-    public int verifierCount = 6;
+    public int verifierCount = 0;
     
     public void Start()
     {
@@ -71,8 +71,6 @@ public class MainController : MonoBehaviour
         userX = 0;
         userY = 0;
         userZ = 0;
-
-        verifierCount = 6;
         
         foreach (var view in _views)
         {
@@ -145,22 +143,6 @@ public class MainController : MonoBehaviour
                 break;
             }
         }
-
-        
-        
-        
-        
-        
-        
-        // for test
-        // _verifiers.Add(new Verifier(Alphabet.A, 4, 1));
-        // _verifiers.Add(new Verifier(Alphabet.B, 9, 1));
-        // _verifiers.Add(new Verifier(Alphabet.C, 18, 2));
-        // _verifiers.Add(new Verifier(Alphabet.D, 20, 1));
-        //
-        // _x = 1;
-        // _y = 1;
-        // _z = 1;
     }
 
     public void ChangeView(ViewType prev, ViewType next)
