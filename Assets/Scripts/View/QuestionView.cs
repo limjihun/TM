@@ -88,11 +88,11 @@ public class QuestionView : View
 
     public void OnClickHistory()
     {
-        //_mainController.ChangeView(viewType, ViewType.History);
+        _mainController.ChangeView(ViewType.None, ViewType.History);
     }
 
     public void OnClickMemo()
     {
-        //_mainController.ChangeView(viewType, ViewType.Memo);
+        _mainController.ChangeView(ViewType.None, ViewType.Memo);
     }
 }

@@ -26,6 +26,7 @@ public class View : MonoBehaviour
 
 public enum ViewType
 {
+    None = -1,
     Clear,
     Fail,
     History,

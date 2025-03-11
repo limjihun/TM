@@ -7,8 +7,9 @@ public class MainController : MonoBehaviour
 {
     [SerializeField] private View[] _views;
 
-    public List<History> _historyList = new();
-    public List<Verifier> _verifiers = new();
+    private List<History> _historyList = new();
+    public List<History> historyList => _historyList;
+    private List<Verifier> _verifiers = new();
     public int round;
     public int t;
     public int r;
@@ -88,8 +89,8 @@ public class MainController : MonoBehaviour
 
     public void ChangeView(ViewType prev, ViewType next)
     {
-        _views.First(p => p.viewType == prev).Show(false);
-        _views.First(p => p.viewType == next).Show(true);
+        _views.FirstOrDefault(p => p.viewType == prev)?.Show(false);
+        _views.FirstOrDefault(p => p.viewType == next)?.Show(true);
     }
 
     public void OnValidate()
