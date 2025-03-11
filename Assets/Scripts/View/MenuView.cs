@@ -13,6 +13,8 @@ public class MenuView : View
         _toggles[0].Init(Constants.colorBlue, OnValueChanged);
         _toggles[1].Init(Constants.colorYellow, OnValueChanged);
         _toggles[2].Init(Constants.colorPurple, OnValueChanged);
+
+        _startButton.interactable = false;
     }
 
     private void OnValueChanged()
