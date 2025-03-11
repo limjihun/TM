@@ -4,19 +4,10 @@ using UnityEngine;
 
 public class Verifier
 {
-    public static int[] maxLogicIds = new[]
-    {
-        -1, 2, 3, 3, 3, 2, 2, 2, 4, 4, // 0~9 
-        4, 3, 3, 3, 3, 3, 2, 4, 2, 3, // 10~19
-        3, 2, 3, 3, 3, 3, 3, 3, 3, 3, // 20~29
-        3, 3, 3, 6, 3, 3, 3, 3, 3, 6, // 30~39
-        9, 9, 6, 6, 6, 6, 6, 6, 9     // 40~48
-    };
-
     public Alphabet alphabet;
     public int id;
     public int logicId;
-    public int maxLogicId => maxLogicIds[id];
+    public int maxLogicId => Constants.maxLogicIds[id];
     public List<int> xLogicIdList = new();
     
     public Verifier(Alphabet alphabet, int id, int logicId)
