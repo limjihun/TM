@@ -8,6 +8,14 @@ public class MenuView : View
     [SerializeField] private ColorToggle[] _toggles;
     [SerializeField] private Button _startButton;
 
+    public override void Clear()
+    {
+        foreach (var toggle in _toggles)
+        {
+            toggle.isOn = false;
+        }
+    }  
+    
     public void OnEnable()
     {
         _toggles[0].Init(Constants.colorBlue, OnValueChanged);
