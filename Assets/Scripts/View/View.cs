@@ -37,4 +37,5 @@ public enum ViewType
     SolveCode,
     Verifiers,
     Help,
+    Answer,
 }

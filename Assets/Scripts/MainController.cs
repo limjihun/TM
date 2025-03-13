@@ -23,6 +23,9 @@ public class MainController : MonoBehaviour
     private int _x;
     private int _y;
     private int _z;
+    public int x => _x;
+    public int y => _y;
+    public int z => _z;
     
     public int userX;
     public int userY;

@@ -15,4 +15,9 @@ public class FailView : View
         _mainController.NextRound();
         _mainController.ChangeView(viewType, ViewType.InputCode);
     }
+
+    public void OnClickAnswer()
+    {
+        _mainController.ChangeView(viewType, ViewType.Answer);
+    }
 }
