@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -209,7 +210,7 @@ public class Verifier
                 return t + 1 != r && r + 1 != c;
             
             case 2501:
-                return (t + 1 != r && r + 1 != c) || (t - 1 != r && r - 1 != c);
+                return Math.Abs(t - r) != 1 && Math.Abs(r - c) != 1; 
             case 2502: // 오름내림 같이 볼 필요는 없음. 121도 오름 내림 숫자 두 개 연속으로 봄
                 return (t + 1 == r && r + 1 != c) || (t + 1 != r && r + 1 == c) || (t - 1 == r && r - 1 != c) || (t - 1 != r && r - 1 == c);
             case 2503:
