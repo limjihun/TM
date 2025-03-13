@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -43,6 +44,44 @@ public class MainController : MonoBehaviour
         _views.First(p => p.viewType == ViewType.Menu).Show(true);
 
         MakeTuples();
+        
+        // string directory = Path.GetDirectoryName("Assets/Resources/cards/");
+        // RenameFilesInDirectory(directory);
+    }
+
+    void RenameFilesInDirectory(string directoryPath)
+    {
+        // 디렉토리가 존재하는지 확인
+        if (Directory.Exists(directoryPath))
+        {
+            // 디렉토리 내 모든 파일 가져오기
+            string[] files = Directory.GetFiles(directoryPath);
+
+            // 각 파일에 대해 이름 변경
+            foreach (string filePath in files)
+            {
+                if (Path.GetExtension(filePath).Contains(".meta"))
+                    continue;
+                
+                string directory = Path.GetDirectoryName(filePath);
+                string oldFileName = Path.GetFileNameWithoutExtension(filePath);
+                string extension = Path.GetExtension(filePath);
+
+                // 파일 이름을 5자로 줄이기
+                string newFileName = oldFileName.Length > 18 ? oldFileName.Substring(0, 18) : oldFileName;
+
+                // 새 파일 경로 생성
+                string newFilePath = Path.Combine(directory, newFileName + extension);
+
+                // 파일 이름 변경
+                File.Move(filePath, newFilePath);
+                Debug.Log($"File renamed: {oldFileName + extension} to {newFileName + extension}");
+            }
+        }
+        else
+        {
+            Debug.LogError("The directory does not exist.");
+        }
     }
 
     // 가능한 모든 숫자쌍
