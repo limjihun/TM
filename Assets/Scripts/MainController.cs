@@ -30,6 +30,9 @@ public class MainController : MonoBehaviour
     // Setting
     public int verifierCount = 0;
     
+    private List<int> _ids = Enumerable.Range(1, 48).ToList();
+    private List<Tuple<int, int, int>> _tuples = new();
+    
     public void Start()
     {
         foreach (var view in _views)
@@ -38,7 +41,25 @@ public class MainController : MonoBehaviour
         }
         
         _views.First(p => p.viewType == ViewType.Menu).Show(true);
+
+        MakeTuples();
     }
+
+    // 가능한 모든 숫자쌍
+    private void MakeTuples()
+    {
+        for (int i = 1; i <= 5; i++)
+        {
+            for (int j = 1; j <= 5; j++)
+            {
+                for (int k = 1; k <= 5; k++)
+                {
+                    _tuples.Add(Tuple.Create(i, j, k));
+                }
+            }
+        }    
+    }
+    
     public void StartGame()
     {
         Clear();
@@ -78,6 +99,7 @@ public class MainController : MonoBehaviour
         }
     }
 
+    private List<Tuple<int, int, int>> _tempTuples = new();
     private void SelectVerifiers()
     {
         int verifierSelectCount = 0;
@@ -86,63 +108,69 @@ public class MainController : MonoBehaviour
             verifierSelectCount++;
             Debug.Log($"VerifierSelectCount : {verifierSelectCount}");
             _verifiers.Clear();
-            
+
+            var list = GetRandomSelection(_ids, verifierCount);
             // Select Verifier
             for (int i = 0; i < verifierCount; ++i)
             {
-                var randomId = Random.Range(1, 49);
+                var randomId = list[i];
                 var randomLogicId = Random.Range(1, Constants.maxLogicIds[randomId] + 1);
                 _verifiers.Add(new Verifier((Alphabet)i, randomId, randomLogicId));
             }
-
-            var answerCount = 0;
-            var x = 0;
-            var y = 0;
-            var z = 0;
             
             // Validate Solo Answer
-            for (int t = 1; t <= 5; ++t)
+            var tuples = new List<Tuple<int, int, int>>(_tuples);
+            bool hasWrongVerifier = false;
+            foreach (var verifier in _verifiers)
             {
-                for (int r = 1; r <= 5; ++r)
+                _tempTuples.Clear();
+
+                foreach (var tuple in tuples)
                 {
-                    for (int c = 1; c <= 5; ++c)
-                    {
-                        bool isX = false;
-                        foreach (var verifier in _verifiers)
-                        {
-                            if (verifier.Verify(t, r, c) == CheckResult.X)
-                            {
-                                isX = true;
-                                break;
-                            }
-                        }
+                    if (verifier.Verify(tuple.Item1, tuple.Item2, tuple.Item3) == CheckResult.X)
+                        _tempTuples.Add(tuple);
+                }
 
-                        if (isX)
-                            continue;
+                // 이 검증기로 제외되는 조합이 존재하지 않음
+                if (_tempTuples.Count == 0)
+                {
+                    hasWrongVerifier = true;
+                    break;
+                }
 
-                        answerCount++;
-                        if (answerCount > 1)
-                        {
-                            t = r = c = 6; // break;
-                            continue;
-                        }
-                        
-                        x = t;
-                        y = r;
-                        z = c;
-                    }
+                foreach (var tuple in _tempTuples)
+                {
+                    tuples.Remove(tuple);
                 }
             }
 
-            if (answerCount == 1)
+            if (!hasWrongVerifier && tuples.Count == 1)
             {
-                _x = x;
-                _y = y;
-                _z = z;
+                var solution = tuples[0];
+                _x = solution.Item1;
+                _y = solution.Item2;
+                _z = solution.Item3;
                 
                 break;
             }
         }
+    }
+    
+    private List<T> GetRandomSelection<T>(List<T> list, int count)
+    {
+        if (count > list.Count)
+        {
+            throw new ArgumentException("Count cannot be greater than the number of elements in the list.");
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            int j = Random.Range(i, list.Count);
+            // Swap elements at indices i and j
+            (list[i], list[j]) = (list[j], list[i]);
+        }
+
+        return list.GetRange(0, count);
     }
 
     public void ChangeView(ViewType prev, ViewType next)
