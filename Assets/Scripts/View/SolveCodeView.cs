@@ -11,7 +11,8 @@ public class SolveCodeView : View
     [SerializeField] private ColorToggle[] _cToggles;
 
     [SerializeField] private Button _submitButton;
-
+    [SerializeField] private GameObject _codes;
+    
     private int _t;
     private int _r;
     private int _c;
@@ -37,7 +38,8 @@ public class SolveCodeView : View
             cToggle.isOn = false;
         }
         
-        _submitButton.interactable = CanSubmit();
+        _codes.SetActive(false);
+        _submitButton.interactable = true;
     }
 
     public void OnEnable()
@@ -71,7 +73,8 @@ public class SolveCodeView : View
             ++index;
         }
 
-        _submitButton.interactable = CanSubmit();
+        _codes.SetActive(false);
+        _submitButton.interactable = true;
     }
 
     private void SaveT()
@@ -111,6 +114,13 @@ public class SolveCodeView : View
 
     public void OnClickSubmit()
     {
+        if (_codes.activeSelf == false)
+        {
+            _codes.SetActive(true);
+            _submitButton.interactable = CanSubmit();
+            return;
+        }
+        
         if (!CanSubmit())
             return;
 
