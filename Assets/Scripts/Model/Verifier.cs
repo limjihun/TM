@@ -18,6 +18,11 @@ public class Verifier
         this.logicId = logicId;
     }
 
+    public void ClearCheck()
+    {
+        xLogicIdList.Clear();
+    }
+
     public void CheckX(int logicId)
     {
         if (xLogicIdList.Contains(logicId))

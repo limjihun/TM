@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 public class MainController : MonoBehaviour
 {
@@ -30,6 +30,10 @@ public class MainController : MonoBehaviour
     public int userX;
     public int userY;
     public int userZ;
+
+    private int _dailyX;
+    private int _dailyY;
+    private int _dailyZ;
     
     // Setting
     public int verifierCount = 0;
@@ -40,6 +44,9 @@ public class MainController : MonoBehaviour
     private ViewType _prevViewType;
     private ViewType _currViewType;
     public ViewType prevViewType => _prevViewType;
+
+    private string _dailyDate;
+    private List<Verifier> _dailyVerifiers = new();
     
     public void Start()
     {
@@ -109,7 +116,54 @@ public class MainController : MonoBehaviour
     public void StartGame()
     {
         Clear();
-        SelectVerifiers();
+        SelectVerifiers(false);
+        
+        foreach (var view in _views)
+        {
+            view.Init(_verifiers);
+        }
+        
+        ChangeView(ViewType.Menu, ViewType.Verifiers);
+    }
+    
+    public void StartDailyGame()
+    {
+        Clear();
+
+        if (_dailyDate != DateTime.Today.ToString("yyyy-MM-dd"))
+        {
+            _dailyVerifiers.Clear();
+
+            _dailyX = 0;
+            _dailyY = 0;
+            _dailyZ = 0;
+        }
+        
+        if (_dailyVerifiers.Count != 0)
+        {
+            verifierCount = 6;
+            _verifiers = new List<Verifier>(_dailyVerifiers);
+            foreach (var verifier in _verifiers)
+            {
+                verifier.ClearCheck();
+            }
+
+            _x = _dailyX;
+            _y = _dailyY;
+            _z = _dailyZ;
+        }
+        else
+        {
+            verifierCount = 6;
+
+            _dailyDate = DateTime.Today.ToString("yyyy-MM-dd");
+            SelectVerifiers(true);
+            
+            _dailyVerifiers = new List<Verifier>(_verifiers);
+            _dailyX = _x;
+            _dailyY = _y;
+            _dailyZ = _z;
+        }
         
         foreach (var view in _views)
         {
@@ -149,8 +203,18 @@ public class MainController : MonoBehaviour
     }
 
     private List<Tuple<int, int, int>> _tempTuples = new();
-    private void SelectVerifiers()
+    private void SelectVerifiers(bool isDailyQuiz)
     {
+        Random random;
+        if (isDailyQuiz)
+        {
+            string todayStr = DateTime.Today.ToString("yyyy-MM-dd");
+            int seed = todayStr.GetHashCode();
+            random = new Random(seed);
+        }
+        else
+            random = new Random(DateTime.Now.GetHashCode());
+        
         int verifierSelectCount = 0;
         while (true)
         {
@@ -158,12 +222,12 @@ public class MainController : MonoBehaviour
             Debug.Log($"VerifierSelectCount : {verifierSelectCount}");
             _verifiers.Clear();
 
-            var list = GetRandomSelection(_ids, verifierCount);
+            var list = GetRandomSelection(_ids, verifierCount, random);
             // Select Verifier
             for (int i = 0; i < verifierCount; ++i)
             {
                 var randomId = list[i];
-                var randomLogicId = Random.Range(1, Constants.maxLogicIds[randomId] + 1);
+                var randomLogicId = random.Next(1, Constants.maxLogicIds[randomId] + 1);
                 _verifiers.Add(new Verifier((Alphabet)i, randomId, randomLogicId));
             }
             
@@ -205,7 +269,7 @@ public class MainController : MonoBehaviour
         }
     }
     
-    private List<T> GetRandomSelection<T>(List<T> list, int count)
+    private List<T> GetRandomSelection<T>(List<T> list, int count, Random random)
     {
         if (count > list.Count)
         {
@@ -214,7 +278,7 @@ public class MainController : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            int j = Random.Range(i, list.Count);
+            int j = random.Next(i, list.Count);
             // Swap elements at indices i and j
             (list[i], list[j]) = (list[j], list[i]);
         }

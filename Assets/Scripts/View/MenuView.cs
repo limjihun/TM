@@ -60,4 +60,9 @@ public class MenuView : View
     {
         _mainController.StartGame();
     }
+
+    public void OnClickDailyQuiz()
+    {
+        _mainController.StartDailyGame();
+    }
 }
