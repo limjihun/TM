@@ -12,6 +12,7 @@ public class SolveCodeView : View
 
     [SerializeField] private Button _submitButton;
     [SerializeField] private GameObject _codes;
+    [SerializeField] private TextMeshProUGUI _nextButtonText;
     
     private int _t;
     private int _r;
@@ -40,11 +41,7 @@ public class SolveCodeView : View
         
         _codes.SetActive(false);
         _submitButton.interactable = true;
-    }
-
-    public void OnEnable()
-    {
-        Clear();
+        _nextButtonText.SetText("다음 라운드");
     }
     
     public override void Init(List<Verifier> verifiers)
@@ -108,6 +105,12 @@ public class SolveCodeView : View
     
     public void OnClickNext()
     {
+        if (_codes.activeSelf)
+        {
+            _mainController.ChangeView(viewType, ViewType.Verifiers);
+            return;
+        }
+        
         _mainController.NextRound();
         _mainController.ChangeView(viewType, ViewType.InputCode);
     }
@@ -118,6 +121,8 @@ public class SolveCodeView : View
         {
             _codes.SetActive(true);
             _submitButton.interactable = CanSubmit();
+            _nextButtonText.SetText("검증기 보기");
+
             return;
         }
         

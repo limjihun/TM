@@ -45,6 +45,10 @@ public class VerifiersView : View
 
     public void OnClickNext()
     {
-        _mainController.ChangeView(viewType, ViewType.InputCode);
+        if (_mainController.prevViewType == ViewType.Menu)
+            _mainController.ChangeView(viewType, ViewType.InputCode);
+        else
+            _mainController.BackToPrevView();
+
     }
 }

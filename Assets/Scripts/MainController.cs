@@ -36,6 +36,10 @@ public class MainController : MonoBehaviour
     
     private List<int> _ids = Enumerable.Range(1, 48).ToList();
     private List<Tuple<int, int, int>> _tuples = new();
+
+    private ViewType _prevViewType;
+    private ViewType _currViewType;
+    public ViewType prevViewType => _prevViewType;
     
     public void Start()
     {
@@ -134,6 +138,9 @@ public class MainController : MonoBehaviour
         userX = 0;
         userY = 0;
         userZ = 0;
+
+        _prevViewType = ViewType.None;
+        _currViewType = ViewType.None;
         
         foreach (var view in _views)
         {
@@ -217,8 +224,16 @@ public class MainController : MonoBehaviour
 
     public void ChangeView(ViewType prev, ViewType next)
     {
+        _prevViewType = prev;
+        _currViewType = next;
+        
         _views.FirstOrDefault(p => p.viewType == prev)?.Show(false);
         _views.FirstOrDefault(p => p.viewType == next)?.Show(true);
+    }
+
+    public void BackToPrevView()
+    {
+        ChangeView(_currViewType, _prevViewType);
     }
 
     public void OnValidate()
