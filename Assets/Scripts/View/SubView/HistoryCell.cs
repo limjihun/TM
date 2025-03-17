@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,11 +13,14 @@ public class HistoryCell : MonoBehaviour
     [SerializeField] private Sprite _o;
     [SerializeField] private Sprite _x;
 
-    public void Init(History history)
+    private Action<string> _clickCallback;
+    
+    public void Init(History history, Action<string> clickCallback)
     {
         _t.SetText($"{history.t}");
         _r.SetText($"{history.r}");    
         _c.SetText($"{history.c}");
+        _clickCallback = clickCallback;
 
         for (int i = 0; i < _images.Length; ++i)
         {
@@ -36,5 +40,10 @@ public class HistoryCell : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void OnClicked(string alphabet)
+    {
+        _clickCallback.Invoke(alphabet);
     }
 }

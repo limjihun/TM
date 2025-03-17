@@ -41,7 +41,7 @@ public class HistoryView : View
         foreach (var history in _mainController.historyList)
         {
             var cell = Instantiate(_historyCellPrefab, _parentTransform).GetComponent<HistoryCell>();
-            cell.Init(history);
+            cell.Init(history, OnClickAlphabet);
             _historyCells.Add(cell);    
         }
     }
