@@ -47,7 +47,8 @@ public class MainController : MonoBehaviour
 
     private string _dailyDate;
     private List<Verifier> _dailyVerifiers = new();
-    
+    private bool _isDailyQuiz;
+    public bool isDailyQuiz => _isDailyQuiz;
     public void Start()
     {
         foreach (var view in _views)
@@ -130,6 +131,8 @@ public class MainController : MonoBehaviour
     {
         Clear();
 
+        _isDailyQuiz = true;
+        
         if (_dailyDate != DateTime.Today.ToString("yyyy-MM-dd"))
         {
             _dailyVerifiers.Clear();
@@ -195,6 +198,8 @@ public class MainController : MonoBehaviour
 
         _prevViewType = ViewType.None;
         _currViewType = ViewType.None;
+
+        _isDailyQuiz = false;
         
         foreach (var view in _views)
         {

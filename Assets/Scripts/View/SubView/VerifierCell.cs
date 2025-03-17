@@ -98,6 +98,7 @@ public class VerifierCell : MonoBehaviour
         _icons[3].SetActive(true); // Robot Anim
 
         _mainController.questionCount++;
+        _mainController.totalQuestionCount++;
         StartCoroutine(PlaySearchAnim());
     }
 
