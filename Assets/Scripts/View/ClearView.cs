@@ -59,6 +59,6 @@ public class ClearView : View
         stringBuilder.AppendLine();
         stringBuilder.Append($"https://limjihun.github.io/TM/");
 
-        UniClipboard.SetText(stringBuilder.ToString());
+        WebGLCopyAndPaste.WebGLCopyAndPasteAPI.CopyToClipboard(stringBuilder.ToString());
     }
 }
