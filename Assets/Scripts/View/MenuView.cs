@@ -65,4 +65,9 @@ public class MenuView : View
     {
         _mainController.StartDailyGame();
     }
+
+    public void OnClickBuy()
+    {
+        Application.OpenURL("https://www.happybaobab.com/shop/item.php?it_id=CD05C-33551");
+    }
 }

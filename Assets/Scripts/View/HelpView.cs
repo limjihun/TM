@@ -14,4 +14,9 @@ public class HelpView : View
     {
         _mainController.ChangeView(viewType, ViewType.None);
     }
+
+    public void OnClickRule()
+    {
+        Application.OpenURL("https://youtu.be/PnJ1bc2_SSQ");
+    }
 }
