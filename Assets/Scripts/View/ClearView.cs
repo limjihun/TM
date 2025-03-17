@@ -59,6 +59,11 @@ public class ClearView : View
         stringBuilder.AppendLine();
         stringBuilder.Append($"https://limjihun.github.io/TM/");
 
-        GUIUtility.systemCopyBuffer = stringBuilder.ToString();
+        //GUIUtility.systemCopyBuffer = stringBuilder.ToString();
+
+        var textEditor = new TextEditor();
+        textEditor.text = stringBuilder.ToString();
+        textEditor.SelectAll();
+        textEditor.Copy();
     }
 }
